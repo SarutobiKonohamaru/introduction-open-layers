@@ -10,14 +10,14 @@ const callbacks = [
 const layers = [
     new ol.layer.Tile({
         source: new ol.source.OSM(),
-        visible: false,
+        visible: true,
         title: "OSM standard"
     }),
     new ol.layer.Tile({
         source: new ol.source.OSM({
             url: "https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         }),
-        visible: false,
+        visible: true,
         title: "OSM Humanitarian"
     }),
     new ol.layer.Tile({
@@ -30,6 +30,11 @@ const layers = [
     })
 ]
 
+const baseLayersGroup = new ol.layer.Group({
+    layers: layers
+}) 
+
+
 const init = () => {
     const map = new ol.Map({
         target: "map-container",
@@ -39,13 +44,10 @@ const init = () => {
             maxZoom: 10,
             minZoom: 4,
             //rotation: 0.5
-        }),
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            })
-        ]
+        })
     })
+
+    map.addLayer(baseLayersGroup)
 
     for (const callback of callbacks) {
         map.on(callback.type, callback.def)
